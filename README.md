@@ -6,19 +6,19 @@ A more detailed explanation is available on [medium](https://codeburst.io/a-conc
 A Hyperledger fabric Java client.
 This tutorial uses connection profile in order to simplify the process of getting access to fabric network.
 
-<b><u>Prerequsite:</u></b>
+<b><u>Prerequisite:</u></b>
 
 <b>1. Fabric network:</b> A running fabric network. See [this](https://hyperledger-fabric.readthedocs.io/en/release-1.2/build_network.html) tutorial to quickly bootstrap a network. To practice on this client, my recommendation would be to start a network on <b>IBM Blockchain Platform</b>. It enables fast and easy setup of a multi-org blockchain network and yes, it is free of cost under Starter plan.
 [Here](https://console.bluemix.net/docs/services/blockchain/starter_plan.html#overview) is a how you can set up a blockchain network in minutes.
 
-<b>2. A chain code:</b> A sample chain code(written in Golang) is provided under config/chaincode/ directory. You have options to write your own.
+<b>2. A chain code:</b> A sample chain code (written in Golang) is provided under `config/chaincode/` directory. You have options to write your own.
 
-<b>3. Connection profile:</b> The application will load a network <b>connection profile </b>(/src/com/fabric/config/network-config.json) file and then it will be used by fabric java client to simplify the steps needed to set up and use the network. The connection profile has specific addresses and settings of network items.
+<b>3. Connection profile:</b> The application will load a network <b>connection profile </b>(`/src/com/fabric/config/network-config.json`) file and then it will be used by fabric java client to simplify the steps needed to set up and use the network. The connection profile has specific addresses and settings of network items.
 If your network runs on IBM Blockchain platform, then <b>Connection Profile</b> can be downloaded as shown here:
 
 ![pic](https://github.com/vishal3152/HyperledgerFabric-Java-Client/blob/master/images/image.png)
 
-A sample connection profile has been provided under directory /src/com/fabric/config/.
+A sample connection profile has been provided under directory `/src/com/fabric/config/`.
 A detailed documentation on how to create a connection profile for your network is available [here.](
 https://hyperledger.github.io/composer/latest/reference/connectionprofile)
 
@@ -30,9 +30,9 @@ https://hyperledger.github.io/composer/latest/reference/connectionprofile)
 <b>Step 1: Enrolling admin:</b>
 
 When we bootstrapped our blockchain network, an admin user was <b>registered</b> with the MSP provider, fabric-ca server in our case.
-Now we need user-context of the admin user for our client to perform operations on blockchain network. We need to send an enrol call to CA server and retrieve the enrollment certificate(long-term identity) for the admin. Later on,
+Now we need user-context of the admin user for our client to perform operations on blockchain network. We need to send an enrol call to CA server and retrieve the enrollment certificate (long-term identity) for the admin. Later on,
 we will use this enrollment certificate to construct admin's user-context.
-To make the enrol call, we require an identity(username), admin, in this case, its secret key and a ca-client. If you are using one of the samples, then the secret key would be adminpw. The secret key for network running on the IBM cloud platform can be found inside the connection profile:- under 'registrar' object, find 'enrollId' and 'enrollSecret' property.
+To make the enrol call, we require an identity (username), admin, in this case, its secret key and a ca-client. If you are using one of the samples, then the secret key would be adminpw. The secret key for network running on the IBM cloud platform can be found inside the connection profile:- under 'registrar' object, find 'enrollId' and 'enrollSecret' property.
 
 ```Java
    public void enrollAdmin(String name, String secret) throws Exception {
@@ -62,7 +62,7 @@ To make the enrol call, we require an identity(username), admin, in this case, i
     }
 ```
 
-On successful enrolment, admin user context will be saved under MSP folder.
+On successful enrollment, admin user context will be saved under MSP folder.
 
 <b>Step 2: Registering and enrolling user:</b>
 Now, of course, we would not like to use this admin user to invoke all transaction on blockchain network. We may require access control decisions in our chaincode based on the attributes of the identity of the client (i.e. the invoker of the chain code), called [ABAC](https://hyperledger-fabric-ca.readthedocs.io/en/release-1.1/users-guide.html#attribute-based-access-control) in short. so the whole point here is to enable other users to interact with the network and this is a two-step process:
@@ -81,7 +81,7 @@ Now, of course, we would not like to use this admin user to invoke all transacti
             return;
         }
 
-        //User is not registered, construct a registeration request
+        //User is not registered, construct a registration request
         RegistrationRequest regRequest = new RegistrationRequest(userName, org);
 
         //Reterive registrar(admin) usercontext from msp folder
